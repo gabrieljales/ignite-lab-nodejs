@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Notification {
+    id          String    @id
+    // Referência de uma informação que está em outro serviço
+    // recipientId: Como essa entidade pode se relacionar com muitos serviços, ela poderá ter nomes diferentes nesses
+    //  serviços. (por isso não é userId ou algo do tipo)
+    recipientId String
+    content     String
+    category    String
+    readAt      DateTime?
+    createdAt   DateTime  @default(now())
+
+    @@index([recipientId])
+}
