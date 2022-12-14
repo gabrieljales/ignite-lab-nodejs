@@ -1,3 +1,4 @@
+import { Replace } from 'src/helpers/Replace';
 import { Content } from './content';
 
 export interface INotification {
@@ -11,8 +12,13 @@ export interface INotification {
 export class Notification {
   private props: INotification;
 
-  constructor(props: INotification) {
-    this.props = props;
+  constructor(props: Replace<INotification, { createdAt?: Date }>) {
+    this.props = {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+      // Se o createdAt for informado, usamos ele. Se não, definimos a data atual
+      // Dessa forma sempre vamos ter o createdAt, mas na hora de criar a notificação, ele é opcional
+    };
   }
 
   public set recipientId(recipientId: string) {
