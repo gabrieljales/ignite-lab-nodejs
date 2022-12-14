@@ -1,6 +1,9 @@
 # database
 *.db
 
+# Env files
+.env
+
 # compiled output
 /dist
 /node_modules
