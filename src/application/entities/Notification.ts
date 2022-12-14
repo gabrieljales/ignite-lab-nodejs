@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { Replace } from 'src/helpers/Replace';
 import { Content } from './content';
 
@@ -10,15 +11,22 @@ export interface INotification {
 }
 
 export class Notification {
+  // Motivo do underline e motivo de colocar _id fora de props explicados no notion - aula 02
+  private _id: string;
   private props: INotification;
 
   constructor(props: Replace<INotification, { createdAt?: Date }>) {
+    this._id = randomUUID();
     this.props = {
       ...props,
       createdAt: props.createdAt ?? new Date(),
       // Se o createdAt for informado, usamos ele. Se não, definimos a data atual
       // Dessa forma sempre vamos ter o createdAt, mas na hora de criar a notificação, ele é opcional
     };
+  }
+
+  public get id() {
+    return this._id;
   }
 
   public set recipientId(recipientId: string) {
