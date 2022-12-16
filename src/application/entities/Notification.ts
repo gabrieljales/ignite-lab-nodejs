@@ -7,6 +7,7 @@ export interface INotification {
   content: Content;
   category: string;
   readAt?: Date | null;
+  canceledAt?: Date | null;
   createdAt: Date; // não é possível ser nulo
 }
 
@@ -59,6 +60,15 @@ export class Notification {
 
   public get readAt(): Date | null | undefined {
     return this.props.readAt;
+  }
+
+  // Não faz sentido poder alterar a data de cancelamento para uma data que quiser, por isso invés de um getter temos esse método
+  public cancel() {
+    this.props.canceledAt = new Date();
+  }
+
+  public get canceledAt(): Date | null | undefined {
+    return this.props.canceledAt;
   }
 
   // Não tem um setter pois não faz sentido atualizar o createdAt
