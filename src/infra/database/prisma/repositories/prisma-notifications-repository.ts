@@ -10,6 +10,26 @@ export class PrismaNotificationsRepository implements NotificationsRepository {
   constructor(private prismaService: PrismaService) {}
 
   async findById(notificationId: string): Promise<Notification | null> {
+    const notification = await this.prismaService.notification.findUnique({
+      where: {
+        id: notificationId,
+      },
+    });
+
+    if (!notification) {
+      return null;
+    }
+
+    // Lembre-se: A entidade de notificação do prisma não é a mesma classe Notification que criamos. Por isso, precisamos de um mapper toDomain
+    // A entidade Notification na camada de aplicação !== Notification na camada de persistência (BD)
+    return PrismaNotificationMapper.toDomain(notification);
+  }
+
+  findManyByRecipientId(recipientId: string): Promise<Notification[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  countManyByRecipientId(recipientId: string): Promise<number> {
     throw new Error('Method not implemented.');
   }
 
